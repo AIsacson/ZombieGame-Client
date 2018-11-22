@@ -25,7 +25,9 @@ public class ServerConnection implements Runnable {
 
     public void connectToServer() {
         try {
+            mainActivity.log("Kopplar upp sig mot servern...");
             clientSocket = new Socket(host, port);
+            mainActivity.log("Uppkopplad.");
 
             fromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             toServer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream())), true);
@@ -34,12 +36,12 @@ public class ServerConnection implements Runnable {
         }
     }
 
-    private void disconnectToServer() {
+    void disconnectToServer() {
         disconnected = true;
         mainActivity.disconnected();
     }
 
-    private void sendToServer(String msg) {
+    void sendToServer(String msg) {
         toServer.println(msg);
     }
 
@@ -48,7 +50,11 @@ public class ServerConnection implements Runnable {
         try {
             while(!disconnected){
                 lineFromServer = fromServer.readLine();
+                mainActivity.log("From server: " + lineFromServer);
             }
+            toServer.close();
+            fromServer.close();
+            clientSocket.close();
         } catch (Exception e) {
             System.err.println("Failed to read from Server.");
         }

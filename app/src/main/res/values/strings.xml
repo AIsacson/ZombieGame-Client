@@ -1,5 +1,11 @@
 <resources>
-    <string name="app_name">Assignment5</string>
-    <string name="host">localhost</string>
-    <string name="port">2002</string>
+    <string name="app_name">Zombie Game</string>
+    <string name="HOST">localhost</string>
+    <string name="PORT">2002</string>
+    <string name="name">Name</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
 </resources>
