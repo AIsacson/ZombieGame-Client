@@ -1,8 +1,8 @@
 package se.mobilapp.isacson.anna.assignment5;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
 import android.view.View;
@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements OnClickListener {
+public class MainActivity extends Commands implements OnClickListener {
 
     private ServerConnection serverConnection;
     private Handler handler = new Handler();
@@ -36,14 +36,14 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void setUpUI() {
-        textView = (TextView) findViewById(R.id.textView);
-        nameEditText = (EditText) findViewById(R.id.username);
-        passwordEditText = (EditText) findViewById(R.id.password);
+        textView = findViewById(R.id.textView);
+        nameEditText = findViewById(R.id.username);
+        passwordEditText = findViewById(R.id.password);
 
-        loginBtn = (Button) findViewById(R.id.login);
-        registerBtn = (Button) findViewById(R.id.register);
-        connectBtn = (Button) findViewById(R.id.connect);
-        disconnectBtn = (Button) findViewById(R.id.disconnect);
+        loginBtn = findViewById(R.id.login);
+        registerBtn = findViewById(R.id.register);
+        connectBtn = findViewById(R.id.connect);
+        disconnectBtn = findViewById(R.id.disconnect);
 
         registerBtn.setOnClickListener(this);
         registerBtn.setEnabled(false);
@@ -70,11 +70,18 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         }
 
         if(v == registerBtn) {
-            sendRightCommand("REGISTER " + username + " " + password);
+            String input = sendRightCommand("REGISTER " + username + " " + password);
+            if(input != "") {
+                sendCommand(input);
+            }
         }
 
         if(v == loginBtn) {
-            sendRightCommand("LOGIN " + username + " " + password);
+            String input = sendRightCommand("LOGIN " + username + " " + password);
+            if(input != "") {
+                sendCommand(input);
+                startActivity(new Intent(this, GameWindow.class));
+            }
         }
     }
 
@@ -82,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         serverConnection = null;
     }
 
-    public void sendCommand(String input) {
+    void sendCommand(String input) {
         final String cmd = Integer.toString(counter+1) + " " + input;
         new Thread(new Runnable() {
             @Override
@@ -90,42 +97,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 serverConnection.sendToServer(cmd);
             }
         }).start();
-    }
-
-    void sendRightCommand(String cmd) {
-        String command = "";
-        String [] commandSplitter = cmd.split(" ");
-        if(isValidField(username) && isValidField(password)){
-            switch(commandSplitter[0]) {
-                case "REGISTER":
-                    command = "REGISTER " + commandSplitter[1] + " " + commandSplitter[2];
-                    sendCommand(command);
-                    break;
-                case "LOGIN":
-                    command = "LOGIN " + commandSplitter[1] + " " + commandSplitter[2];
-                    sendCommand(command);
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            System.err.println("Invalid input-fields.");
-        }
-    }
-
-
-    private boolean isValidField(String field) {
-        if(field.length() == 0) {
-            System.err.println("The input-field cannot be empty.");
-            return false;
-        } else {
-            String [] testString = field.split(" ");
-            if(testString.length > 1) {
-                System.err.println("The input-field must be one single line.");
-                return false;
-            }
-        }
-        return true;
     }
 
     void log(String msg) {
