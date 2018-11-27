@@ -1,5 +1,7 @@
 package se.mobilapp.isacson.anna.assignment5;
 
+import android.arch.lifecycle.ViewModel;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -8,7 +10,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class ServerConnection implements Runnable {
-    private MainActivity mainActivity;
+    private ViewModelController viewModel;
     private String host;
     private int port;
     private Socket clientSocket;
@@ -17,17 +19,17 @@ public class ServerConnection implements Runnable {
     private boolean disconnected = false;
     private String lineFromServer;
 
-    public ServerConnection(MainActivity mainActivity, String host, int port) {
-        this.mainActivity = mainActivity;
+    public ServerConnection(ViewModelController viewModel, String host, int port) {
+        this.viewModel = viewModel;
         this.host = host;
         this.port = port;
     }
 
     public void connectToServer() {
         try {
-            mainActivity.log("Kopplar upp sig mot servern...");
+            viewModel.log("Kopplar upp sig mot servern...");
             clientSocket = new Socket(host, port);
-            mainActivity.log("Uppkopplad.");
+            viewModel.log("Uppkopplad.");
 
             fromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             toServer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream())), true);
@@ -38,7 +40,7 @@ public class ServerConnection implements Runnable {
 
     void disconnectToServer() {
         disconnected = true;
-        mainActivity.disconnected();
+        viewModel.disconnected();
     }
 
     void sendToServer(String msg) {
@@ -50,7 +52,7 @@ public class ServerConnection implements Runnable {
         try {
             while(!disconnected){
                 lineFromServer = fromServer.readLine();
-                mainActivity.log("From server: " + lineFromServer);
+                viewModel.log("From server: " + lineFromServer);
             }
             toServer.close();
             fromServer.close();

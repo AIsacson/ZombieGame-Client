@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Zombie Game</string>
-    <string name="HOST">localhost</string>
-    <string name="PORT">2002</string>
     <string name="name">Name</string>
     <string name="password">Password</string>
     <string name="register">Register</string>
@@ -9,4 +7,10 @@
     <string name="connect">Connect</string>
     <string name="disconnect">Disconnect</string>
     <string name="logout">Logout</string>
+    <string name="title_setup">Setup</string>
+    <string name="title_map">Map</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>
