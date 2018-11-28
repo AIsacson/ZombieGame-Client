@@ -3,6 +3,7 @@
     <string name="name">Name</string>
     <string name="password">Password</string>
     <string name="register">Register</string>
+    <string name="sendlimit">Set Limit</string>
     <string name="login">Login</string>
     <string name="connect">Connect</string>
     <string name="disconnect">Disconnect</string>
@@ -13,4 +14,6 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="number">Number</string>
 </resources>

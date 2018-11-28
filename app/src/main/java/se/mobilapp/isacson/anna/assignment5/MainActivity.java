@@ -10,7 +10,7 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity {
 
     private HomeFragment firstFragment;
-    private MapFragment secondFragment;
+    private GameFragment secondFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             firstFragment = HomeFragment.newInstance();
-            secondFragment = MapFragment.newInstance();
+            secondFragment = GameFragment.newInstance();
             ft.add(R.id.your_placeholder, firstFragment).commit();
         }
     }
