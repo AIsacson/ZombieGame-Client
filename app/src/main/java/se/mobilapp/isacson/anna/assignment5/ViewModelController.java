@@ -2,6 +2,8 @@ package se.mobilapp.isacson.anna.assignment5;
 
 import android.os.AsyncTask;
 
+import java.net.Socket;
+
 public class ViewModelController {
 
     private ServerConnection serverConnection;

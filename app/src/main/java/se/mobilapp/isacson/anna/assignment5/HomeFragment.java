@@ -12,16 +12,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private ViewModelController viewmodel;
     private EditText nameEditText;
     private EditText passwordEditText;
+    private EditText setLimitText;
     private Button loginBtn;
     private Button registerBtn;
     private Button connectBtn;
     private Button disconnectBtn;
     private Button logoutBtn;
+    private Button setLimitBtn;
 
     private String username;
     // ! must be changed in the future, so the password is not in clear text !
     private String password;
     private String input;
+    private String limit;
 
     private int counter = 0;
 
@@ -58,12 +61,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private void setUpUI() {
         nameEditText = getView().findViewById(R.id.username);
         passwordEditText = getView().findViewById(R.id.password);
+        setLimitText = getView().findViewById(R.id.setLimitText);
 
         loginBtn = getView().findViewById(R.id.login);
         registerBtn = getView().findViewById(R.id.register);
         connectBtn = getView().findViewById(R.id.connect);
         disconnectBtn = getView().findViewById(R.id.disconnect);
         logoutBtn = getView().findViewById(R.id.logout);
+        setLimitBtn = getView().findViewById(R.id.setLimit);
 
         registerBtn.setOnClickListener(this);
         registerBtn.setEnabled(false);
@@ -78,12 +83,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         disconnectBtn.setOnClickListener(this);
         disconnectBtn.setEnabled(false);
+
+        setLimitBtn.setOnClickListener(this);
+        setLimitBtn.setEnabled(false);
     }
 
     @Override
     public void onClick(View v) {
         username = nameEditText.getText().toString();
         password = passwordEditText.getText().toString();
+        limit = setLimitText.getText().toString();
+
         if(v == connectBtn) {
             viewmodel.connectToServer();
             connectBtn.setEnabled(false);
@@ -109,12 +119,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 sendCommand(input);
             }
             logoutBtn.setEnabled(true);
+            setLimitBtn.setEnabled(true);
         }
         if(v == logoutBtn) {
             sendCommand("LOGOUT");
             logoutBtn.setEnabled(false);
         }
-
         if(v == disconnectBtn) {
             disconnectBtn.setEnabled(false);
             disconnectToServer();
@@ -122,6 +132,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             loginBtn.setEnabled(false);
             logoutBtn.setEnabled(false);
             registerBtn.setEnabled(false);
+            setLimitBtn.setEnabled(false);
+        }
+        if(v == setLimitBtn) {
+            if(!isValidField(limit)) {
+                //change this to a pop up later (or something similar).
+                System.err.println("The fields needs to be a single word.");
+            } else {
+                input = "SET-VISIBILITY " + limit;
+                sendCommand(input);
+            }
         }
     }
 

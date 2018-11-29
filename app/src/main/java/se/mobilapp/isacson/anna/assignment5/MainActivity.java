@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SendData{
 
     private HomeFragment firstFragment;
     private GameFragment secondFragment;
@@ -71,4 +71,8 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    public void sendData(String msg) {
+        firstFragment.sendCommand(msg);
+    }
 }

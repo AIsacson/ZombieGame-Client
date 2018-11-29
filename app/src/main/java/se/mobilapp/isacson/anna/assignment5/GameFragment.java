@@ -31,6 +31,7 @@ public class GameFragment extends Fragment implements OnMapReadyCallback{
     private LocationManager locationManager;
     private LocationListener locationListener;
     private GoogleMap mMap;
+    SendData SD;
 
     public static GameFragment newInstance() {
         GameFragment secondFragment = new GameFragment();
@@ -71,6 +72,17 @@ public class GameFragment extends Fragment implements OnMapReadyCallback{
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            SD = (SendData) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Error in retrieving data. Please try again");
+        }
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
@@ -79,6 +91,7 @@ public class GameFragment extends Fragment implements OnMapReadyCallback{
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                sendLocation(location);
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude()))).setTitle("MyLocation");
                 CameraPosition userLocation = CameraPosition.builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(16).bearing(0).tilt(45).build();
@@ -108,6 +121,7 @@ public class GameFragment extends Fragment implements OnMapReadyCallback{
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locationListener);
 
             Location lastKnownLoc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            sendLocation(lastKnownLoc);
             mMap.clear();
             mMap.addMarker(new MarkerOptions().position(new LatLng(lastKnownLoc.getLatitude(), lastKnownLoc.getLongitude()))).setTitle("MyLocation");
             CameraPosition userLocation = CameraPosition.builder().target(new LatLng(lastKnownLoc.getLatitude(), lastKnownLoc.getLongitude())).zoom(16).bearing(0).tilt(45).build();
@@ -115,5 +129,10 @@ public class GameFragment extends Fragment implements OnMapReadyCallback{
         }
         MapsInitializer.initialize(getContext());
 
+    }
+
+    void sendLocation(Location location) {
+        String line = "I-AM-AT " + location.getLatitude() + " " + location.getLongitude();
+        SD.sendData(line);
     }
 }

@@ -27,7 +27,7 @@
         <!--Google Maps Android Key-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="Secret"/>
+            android:value="SECRET"/>
     </application>
 
 </manifest>
